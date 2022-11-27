@@ -1,0 +1,115 @@
+﻿<Page x:Class="TodoListWPF.Views.AssignmentsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TodoListWPF"
+      xmlns:prism="http://prismlibrary.com/"
+      prism:ViewModelLocator.AutoWireViewModel="True"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Background="#011f4b"
+      Title="AssignmentsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Width="400" Height="55" VerticalAlignment="Top" HorizontalAlignment="Center" Background="#6497b1 " Margin="0 15">
+            <TextBlock Text="Zadania na dzień: " FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="DemiBold" ></TextBlock>
+            <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay, StringFormat=dd-MM-yyyy}" IsTodayHighlighted="True" Cursor="Hand" FontSize="16" Margin="5 0" >
+            </DatePicker>
+        </StackPanel >
+
+        <StackPanel Grid.Column="0" Name="ManageAssignmentPanel" Width="400" Height="300" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                    Margin="10 10" Background="#6497b1">
+            <TextBlock Text="{Binding CurrentAction}"
+                       Style="{StaticResource DefaultTextBlockStyle}"
+                       FontSize="22"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Tytuł zadania:"
+                       Style="{StaticResource DefaultTextBlockStyle}"/>
+
+            <TextBox Text="{Binding EditAssignmentTitle, Mode=TwoWay}"
+                     Style="{StaticResource DefaultTextBoxStyle}"/>
+            <TextBlock Text="Opis zadania:"
+                       Style="{StaticResource DefaultTextBlockStyle}"/>
+
+            <TextBox Text="{Binding EditAssignmentDescription, Mode=TwoWay}"
+                     Style="{StaticResource DefaultTextBoxStyle}"/>
+            <TextBlock Text="Dzień wykonania zadania:"
+                       Style="{StaticResource DefaultTextBlockStyle}"/>
+
+            <DatePicker SelectedDate="{Binding EditAssignmentDestinatedDay, Mode=TwoWay, StringFormat=dd-MM-yyyy}" 
+                        IsTodayHighlighted="True"  Cursor="Hand" FontSize="16" Margin="5 0"></DatePicker>
+
+            <Grid Margin="0 15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding AddNewAssignmentCommand}"
+                        Grid.ColumnSpan="3"
+                        x:Name="AddButton"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Content="Dodaj"
+                        Visibility="{Binding AddButtonVisibility}"></Button>
+
+                <Button Command="{Binding EditAssignmentCommand}"
+                        x:Name="EditButton"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Content="Zapisz"
+                        Visibility="{Binding ManageButtonsVisibility}"></Button>
+                <Button Command="{Binding DeleteSelectedAssignmentsCommand}" 
+                        Grid.Column="1"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Content="Usuń"
+                        Visibility="{Binding ManageButtonsVisibility}"></Button>
+                <Button Command="{Binding CancelEditingAssignmentCommand}"
+                        Grid.Column="2"
+                        x:Name="CancelButton"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Content="Anuluj" 
+                        Visibility="{Binding ManageButtonsVisibility}"></Button>
+            </Grid>
+        </StackPanel>
+        
+        <DataGrid Style="{StaticResource DefaultDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True"
+                  Grid.Column="1" 
+                  ItemsSource="{Binding AssignmentList}" 
+                  SelectedItem="{Binding SelectedAssignment}" 
+                  Background="#6497b1">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding Title}"
+                    Header="Tytuł"
+                    MinWidth="100"
+                    Width="*"
+                    />
+                <DataGridTextColumn
+                    Binding="{Binding Description}"
+                    Header="Opis"
+                    MinWidth="100"
+                    Width="*"
+                    />
+                <DataGridTextColumn
+                    Binding="{Binding CreatedDate , StringFormat=dd/MM/yyyy}"
+                    Header="Dzień utworzenia"
+                    MinWidth="120"
+                    Width="120"
+                    />
+                <DataGridTextColumn
+                    Binding="{Binding DestinatedDay , StringFormat=dd/MM/yyyy}"
+                    Header="Dzień wykonania"
+                    MinWidth="120"
+                    Width="120"
+                    />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
